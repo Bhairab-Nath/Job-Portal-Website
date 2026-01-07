@@ -1,7 +1,11 @@
-const { createJob } = require("../controller/jobController")
+const { createJob, getAllJobs, getSingleJob, updateJob, deleteJob } = require("../controller/jobController")
 const authMiddleware = require("../middlewares/authMiddleware")
-const Router = require("express").Router()
+const router = require("express").Router()
 
-Router.post("/createJob",authMiddleware,createJob)
+// router.post("/createJob",authMiddleware,createJob)
+// router.get("/getAllJobs",getAllJobs)
 
-module.exports = Router
+router.route("").get(getAllJobs).post(authMiddleware,createJob)
+router.route("/:id").get(getSingleJob).patch(updateJob).delete(deleteJob)
+
+module.exports = router

@@ -1,4 +1,5 @@
 const Job = require("../model/jobModel")
+const User = require("../model/userModel")
 
 const createJob = async (req, res) => {
     const { title, description, location, salary, company } = req.body
@@ -22,7 +23,13 @@ const createJob = async (req, res) => {
 }
 
 const getAllJobs = async (req, res) => {
-    const jobs = await Job.findAll() //returns array
+    const jobs = await Job.findAll({
+        include: {
+            model: User,
+            attributes: ['id','name','email']
+        }
+    }) //returns array
+
     if (jobs.length === 0) {
         return res.status(400).json({
             message: "No jobs found."
@@ -73,7 +80,7 @@ const updateJob = async (req, res) => {
         company
     }, {
         where: { id },
-        returning: true
+        returning: true      // returning:true allows returning updated data (in postgres only.)
     })
 
     res.status(200).json({

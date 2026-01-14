@@ -3,6 +3,7 @@ const express = require('express');
 const { connectDB } = require('./db/dbConfig');
 const userRoute = require('./routes/userRoute');
 const jobRoute = require('./routes/jobRoute');
+const seedAdmin = require('./adminSeed.js');
 require("./model/index.js");  
 
 const app = express();
@@ -10,6 +11,7 @@ const app = express();
 app.use(express.json()) //frontend ko data backend lai bujhauna yo use garne
 
 connectDB();
+seedAdmin();
 
 app.use("/api/auth", userRoute)
 app.use("/api/job", jobRoute)

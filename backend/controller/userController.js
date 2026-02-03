@@ -3,13 +3,22 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, confirmPassword } = req.body;
+    if (!name || !email || !password || !confirmPassword) {
+        return res.status(400).json({ message: "Please fill all the fields." })
+    }
+
+    if (password !== confirmPassword) {
+        return res.status(400).json({ message: "Passwords do not match." })
+    }
+    
     const existingUser = await User.findOne({ where: { email: email } })
 
     if (existingUser) {
         return res.status(400).json({ message: "User already exists with this email." })
 
     }
+
 
     const hashedPassword = await bcrypt.hash(password, 10);
 

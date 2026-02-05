@@ -82,7 +82,7 @@ export function loginUser(data){
             const response = await apiClient.post('/user/login', data)
             if (response.status === 200){
                 dispatch(setStatus(STATUSES.SUCCESS))
-                dispatch(setData(response.data))
+                dispatch(setData(response.data.user))
                 dispatch(setIsAuthenticated(true))
                 dispatch(setToken(response.data.token))
                 localStorage.setItem('token', response.data.token)

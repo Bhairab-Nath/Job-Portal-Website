@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import Layout from '../components/layout/Layout';
+import { APIAuthenticatedClient } from '../api';
+import { useNavigate } from 'react-router-dom';
 
 const PostJob = () => {
+    const navigate = useNavigate()
+
     const [jobData, setJobData] = useState({
         title: '',
         description: '',
@@ -20,11 +24,22 @@ const PostJob = () => {
 
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
 
         e.preventDefault();
 
-        alert(`Job Posted Successfully for ${jobData.company}!`);
+        try {
+            const response = await APIAuthenticatedClient.post('/job/', jobData)
+            if (response.status === 201) {
+                alert("Job posted successfully!")
+                navigate('/job-provider-dashboard')
+            }
+
+        } catch (error) {
+
+            console.error("Error posting job:", error)
+            alert("Failed to post job. Please try again.")  
+        }
 
         // Reset form
         setJobData({

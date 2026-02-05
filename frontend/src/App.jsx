@@ -5,6 +5,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import JobProviderDashboard from './pages/JobProviderDashboard'
 import PostJob from './pages/PostJob'
+import SingleJob from './pages/SingleJob'
 
 
 const App = () => {
@@ -14,9 +15,11 @@ const App = () => {
         <Routes>
           <Route path="/" element = {<Home/>} />
           <Route path="/register" element = {<Register/>} />
-          <Route path="/login" element = {<Login/>} />
+          <Route path="/login/:role" element = {<Login/>} />
           <Route path="/job-provider-dashboard" element = {<JobProviderDashboard/>} />
           <Route path="/create-job-post" element = {<PostJob/>} />
+          <Route path="/job/:id" element = {<SingleJob/>} />
+          <Route path="/not-found" element = {<NotFound/>} />
           <Route path="*" element = {<NotFound/>} />
         </Routes>
       </BrowserRouter>

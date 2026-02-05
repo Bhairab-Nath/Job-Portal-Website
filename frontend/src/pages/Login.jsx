@@ -1,5 +1,5 @@
 import React, { use, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, resetStatus } from '../store/authSlice'
 import Layout from '../components/layout/Layout'
@@ -8,13 +8,19 @@ import STATUSES from '../../globals/status/statuses'
 const Login = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
+
+    const {role} = useParams()
+
+    if(role !== "job-seeker" && role !== "job-provider") {
+        navigate('/not-found')
+    }
+
     const [data, setData] = useState({
         email: '',
         password: ''
     })
 
-
-    const {status, error} = useSelector((state) => state.auth)
+    const {status, error, data: authData} = useSelector((state) => state.auth)
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -30,11 +36,20 @@ const Login = () => {
     }
 
     useEffect(() => {
-        if (status === STATUSES.SUCCESS && error === null) {
-            navigate('/')
-            dispatch(resetStatus())
+        // if (status === STATUSES.SUCCESS && error === null) {
+        //     navigate('/')
+        //     dispatch(resetStatus())
+        // }
+
+        if(status === STATUSES.SUCCESS && error === null && authData?.role) {
+            if(authData.role === "jobseeker") {
+                navigate('/') // Redirect to home or job seeker dashboard
+            } else if(authData.role === "jobprovider") {
+                navigate('/job-provider-dashboard')
+            }
         }
-    }, [status, error, navigate])
+
+    }, [status, error, authData, navigate])
 
     return (
         <Layout>
@@ -43,10 +58,10 @@ const Login = () => {
 
                
                     <h2 className="text-2xl font-bold text-center text-blue-600">
-                        Job Seeker Login
+                        {role === "job-seeker"? "Job Seeker ": "Job Provider "}Login
                     </h2>
                     <p className="text-center text-gray-500 mt-2">
-                        Login to your account to apply for jobs
+                        Login to your account to {role === "job-seeker" ? "apply for jobs" : "post jobs"}
                     </p>
 
                  

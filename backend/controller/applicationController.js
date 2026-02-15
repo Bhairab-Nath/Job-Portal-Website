@@ -1,4 +1,5 @@
 const Application = require("../model/applicationModel")
+const User = require("../model/userModel")
 
 const jobApply = async (req, res) => {
     const { jobId } = req.params
@@ -16,6 +17,7 @@ const jobApply = async (req, res) => {
 
 }
 
+
 const getAllApplications = async (req, res) => {
 
     const applications = await Application.findAll()
@@ -30,6 +32,32 @@ const getAllApplications = async (req, res) => {
         message: "Applications fetched successfully!",
         applications
     })
+}
+
+const getApplicationByJobId = async (req, res) => {
+    const { jobId } = req.params
+
+    const applications = await Application.findAll({
+        where: {
+            jobId
+        },
+        include: {
+            model: User,
+            attributes: ['id','name','email']
+        }
+    })
+
+    if (applications.length === 0) {
+        return res.status(404).json({
+            message: "Applications not found!"
+        })
+    }
+
+    res.status(200).json({
+        message: "Applications fetched successfully!",
+        applications
+    })
+
 }
 
 const myApplication = async (req, res) => {
@@ -107,4 +135,4 @@ const deleteApplication = async (req, res) => {
 
 
 
-module.exports = { jobApply, getAllApplications, myApplication, updateApplicationStatus, deleteApplication }
+module.exports = { jobApply, getAllApplications, myApplication, updateApplicationStatus, deleteApplication, getApplicationByJobId }

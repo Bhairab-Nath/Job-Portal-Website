@@ -1,4 +1,4 @@
-const { jobApply, updateApplicationStatus, deleteApplication, getAllApplications, myApplication } = require("../controller/applicationController");
+const { jobApply, updateApplicationStatus, deleteApplication, getAllApplications, myApplication, getApplicationByJobId } = require("../controller/applicationController");
 const authenticate = require("../middlewares/authMiddleware");
 const roleAuthorised = require("../middlewares/roleMiddleware");
 const catchError = require("../services/catchError");
@@ -12,5 +12,6 @@ router.route("/myapplications").get(authenticate,roleAuthorised("jobseeker"),cat
 
 router.route("/:id").patch(authenticate,roleAuthorised("jobprovider"),catchError(updateApplicationStatus)).delete(authenticate,roleAuthorised("jobprovider"),catchError(deleteApplication))
 
+router.route("/:jobId").get(authenticate,roleAuthorised("jobprovider"),catchError(getApplicationByJobId))
 
 module.exports = router;

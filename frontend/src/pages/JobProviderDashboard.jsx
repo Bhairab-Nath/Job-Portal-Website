@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Bell, PlusCircle, ClipboardList } from 'lucide-react'
+import { Bell, PlusCircle, ClipboardList, Trash2, Pencil } from 'lucide-react'
 import Layout from '../components/layout/Layout'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { APIAuthenticatedClient } from '../api'
 
 const JobProviderDashboard = () => {
-    // const jobs = [
-    //     { id: 1, title: 'Frontend Developer', applicants: 12, status: 'Open' },
-    //     { id: 2, title: 'Backend Developer', applicants: 8, status: 'Closed' },
-    //     { id: 3, title: 'UI/UX Designer', applicants: 5, status: 'Open' },
-    // ]
-
+  
+    
     const navigate = useNavigate()
     const { data } = useSelector((state) => state.auth)
 
@@ -22,7 +18,7 @@ const JobProviderDashboard = () => {
 
             const response = await APIAuthenticatedClient.get('/job/')
 
-            if(response.status === 200){
+            if (response.status === 200) {
                 setJobs(response.data.data)
             }
         }
@@ -31,6 +27,21 @@ const JobProviderDashboard = () => {
             console.error('Error fetching jobs:', error)
         }
 
+    }
+
+    const handleDelete = async(id) => {
+        try {
+
+            const response = await APIAuthenticatedClient.delete(`/job/${id}`)
+            if (response.status === 200) {
+                alert("Job deleted successfully!")
+                fetchJobs()
+            }
+
+        } catch (error) {
+            console.error("Error deleting job:", error)
+            alert("Failed to delete job. Please try again.")
+        }
     }
 
     useEffect(() => {
@@ -84,7 +95,7 @@ const JobProviderDashboard = () => {
                                     <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Company</th>
                                     <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Applicants</th>
                                     {/* <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Status</th> */}
-                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Action</th>
+                                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-500">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
@@ -92,16 +103,28 @@ const JobProviderDashboard = () => {
                                     <tr key={job.id}>
                                         <td className="px-4 py-2">{job.title}</td>
                                         <td className="px-4 py-2">{job.company}</td>
-                                        <td className="px-4 py-2 text-blue-400 hover:underline"><Link to='/applicants'>23</Link></td>
-                                        {/* <td className="px-4 py-2">
-                                            <span className={`px-2 py-1 rounded-full text-white text-xs ${'accepted' === 'accepted' ? 'bg-green-500' : 'bg-gray-400'}`}>
-                                               Accepted
-                                            </span>
-                                        </td> */}
-                                        <td className="px-4 py-2">
-                                            <button className="text-red-500 hover:underline ">Delete</button>
-                                             <button className="text-green-500 hover:underline pl-4">Update</button>
+                                        <td className="px-4 py-2 text-blue-400 hover:underline"><Link to={`/applications/${job.id}`}>view</Link></td>
+                                     
+                                        <td className="px-4 py-3 ">
+                                            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                                                <button 
+                                                    onClick={() => navigate(`/update-job-post/${job.id}`)}
+                                                    className="flex items-center justify-center gap-1 text-green-600 font-medium px-3 py-1.5 rounded bg-green-50 hover:bg-green-100 transition"
+                                                >
+                                                    <Pencil className="w-4 h-4" />
+                                                    Update
+                                                </button>
+
+                                                <button
+                                                    onClick={() => handleDelete(job.id)}
+                                                    className="flex items-center justify-center gap-1 text-red-500 font-medium px-3 py-1.5 rounded bg-red-50 hover:bg-red-100 transition"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                    Delete
+                                                </button>
+                                            </div>
                                         </td>
+
                                     </tr>
                                 ))}
                             </tbody>

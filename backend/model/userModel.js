@@ -26,8 +26,16 @@ const User = sequelize.define(
             type: DataTypes.ENUM("jobseeker", "jobprovider"),
             allowNull:false,
             defaultValue: "jobseeker"
+        },
+        otp: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        isOtpVerified: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
-
+        
     },{
         timestamps: true
     }

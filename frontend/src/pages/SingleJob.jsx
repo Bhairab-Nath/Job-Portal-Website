@@ -6,7 +6,7 @@ import {
     Building2,
 } from "lucide-react";
 import Layout from "../components/layout/Layout";
-import { apiClient } from "../api";
+import { APIAuthenticatedClient, apiClient } from "../api";
 import { useParams } from "react-router-dom";
 
 const SingleJob = () => {
@@ -58,6 +58,22 @@ const SingleJob = () => {
         catch (error) {
             console.error("Error fetching job:", error)
         }
+    }
+
+
+    const applyJob = async (id) => {
+        try {
+
+            const response = await APIAuthenticatedClient.post(`/application/apply/${id}`)
+
+            if (response.status === 200) {
+                alert("Job applied successfully!")
+            }
+
+        }catch (error) {
+            console.error("Error applying for job:", error)
+        }
+        
     }
 
     useEffect(() => {
@@ -130,7 +146,7 @@ const SingleJob = () => {
                                 Take the next step in your career and apply for this role today.
                             </p>
 
-                            <button className="mt-6 w-full rounded-xl bg-blue-600 py-3 text-white font-medium hover:bg-blue-700 transition">
+                            <button onClick={() => applyJob(job.id)} className="mt-6 w-full rounded-xl bg-blue-600 py-3 text-white font-medium hover:bg-blue-700 transition">
                                 Apply Now
                             </button>
 

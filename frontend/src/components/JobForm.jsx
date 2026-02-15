@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import Layout from '../components/layout/Layout';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { APIAuthenticatedClient } from '../api';
-import { useNavigate } from 'react-router-dom';
+import Layout from './layout/Layout';
 
-const PostJob = () => {
+const JobForm = () => {
     const navigate = useNavigate()
+    const { id } = useParams()
+
+    // console.log("Job ID from params:", id)
 
     const [jobData, setJobData] = useState({
         title: '',
@@ -28,19 +31,40 @@ const PostJob = () => {
 
         e.preventDefault();
 
-        try {
-            const response = await APIAuthenticatedClient.post('/job/', jobData)
-            if (response.status === 201) {
-                alert("Job posted successfully!")
-                navigate('/job-provider-dashboard')
+        //for update
+        if (id) {
+            try {
+
+                const response = await APIAuthenticatedClient.patch(`/job/${id}/`, jobData)
+
+                if (response.status === 200) {
+                    alert("Job updated successfully!")
+                    navigate('/job-provider-dashboard')
+                }
+
+            } catch (error) {
+                console.error("Error updating job:", error)
+                alert("Failed to update job. Please try again.")
             }
 
-        } catch (error) {
 
-            console.error("Error posting job:", error)
-            alert("Failed to post job. Please try again.")  
         }
+        else {
+            //for create
+            try {
 
+                const response = await APIAuthenticatedClient.post('/job/', jobData)
+                if (response.status === 201) {
+                    alert("Job posted successfully!")
+                    navigate('/job-provider-dashboard')
+                }
+
+            } catch (error) {
+
+                console.error("Error posting job:", error)
+                alert("Failed to post job. Please try again.")
+            }
+        }
         // Reset form
         setJobData({
             title: '',
@@ -52,11 +76,45 @@ const PostJob = () => {
 
     }
 
+    const fetchJob = async (id) => {
+
+        try {
+
+            const response = await APIAuthenticatedClient.get(`/job/${id}/`)
+            
+            if (response.status === 200) {
+                const job = response.data.data
+                setJobData({
+                    title: job.title || '',
+                    description: job.description || '',
+                    location: job.location || '',
+                    salary: job.salary || '',
+                    company: job.company || '',
+
+                })
+            }
+        
+        } catch (error) {
+            console.error("Error fetching job data:", error)
+
+        }
+
+    }
+
+    useEffect(() => {
+        if (id){
+            
+            fetchJob(id)
+        }
+    }, [id])
+
+
+
     return (
         <Layout>
             <div className='bg-gray-50 pt-6 min-h-screen'>
                 <div className="max-w-xl mx-auto bg-white py-3 px-5 rounded-xl shadow-lg">
-                    <h2 className="text-xl font-semibold text-gray-800 mb-5 text-center">Post a New Job</h2>
+                    <h2 className="text-xl font-semibold text-gray-800 mb-5 text-center">{id? 'Update Job' : 'Post a New Job'}</h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
                         {/* Job Title */}
                         <div>
@@ -132,7 +190,7 @@ const PostJob = () => {
                                 type="submit"
                                 className="bg-blue-600 w-full hover:bg-blue-700 text-white py-2 rounded-md font-medium transition"
                             >
-                                Post Job
+                                {id? 'Update Job' : 'Post Job'}
                             </button>
                         </div>
                     </form>
@@ -142,4 +200,4 @@ const PostJob = () => {
     )
 }
 
-export default PostJob;
+export default JobForm

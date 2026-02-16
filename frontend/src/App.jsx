@@ -8,6 +8,9 @@ import SingleJob from './pages/SingleJob'
 import CreateJob from './pages/CreateJob'
 import EditJob from './pages/EditJob'
 import ApplicantsList from './pages/ApplicantsList'
+import ForgetPassword from './pages/ForgetPassword'
+import VerifyOtp from './pages/VerifyOtp'
+import ResetPassword from './pages/ResetPassword'
 
 
 const App = () => {
@@ -23,6 +26,9 @@ const App = () => {
           <Route path="/update-job-post/:id" element = {<EditJob/>} />
           <Route path="/applications/:jobId" element = {<ApplicantsList/>} />
           <Route path="/job/:id" element = {<SingleJob/>} />
+          <Route path="/forget-password" element = {<ForgetPassword/>} />
+          <Route path="/verify-otp" element = {<VerifyOtp/>} />
+          <Route path="/reset-password" element = {<ResetPassword/>} />
           <Route path="/not-found" element = {<NotFound/>} />
           <Route path="*" element = {<NotFound/>} />
         </Routes>

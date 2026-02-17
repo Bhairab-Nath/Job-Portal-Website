@@ -51,7 +51,7 @@ A full-stack **Job Portal Web Application** built with **React.js**, **Tailwind 
 ![Home Page](screenshots/Home.png)
 
 ### Job Listings
-![Job Listings](screenshots/jobs.png)
+![Job Listings](screenshots/Jobs.png)
 
 ### User Profile
 ![User Profile](screenshots/JobSeeker-Profile.png)

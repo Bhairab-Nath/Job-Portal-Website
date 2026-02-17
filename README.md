@@ -47,8 +47,6 @@ A full-stack **Job Portal Web Application** built with **React.js**, **Tailwind 
 
 ## 📸 Screenshots
 
-> Store your screenshots in `screenshots/` folder inside the main project directory.
-
 ### Home Page
 ![Home Page](screenshots/Home.png)
 

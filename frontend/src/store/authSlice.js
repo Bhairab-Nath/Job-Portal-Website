@@ -7,7 +7,7 @@ const authSlice = createSlice({
         initialState:{
             isAuthenticated: false,
             data: null,
-            token: null,
+            token: localStorage.getItem('token') || null,
             status: null,
             error: null
         },
@@ -63,7 +63,7 @@ export function registerUser(data){
             if (response.status === 201){
                 dispatch(setStatus(STATUSES.SUCCESS))
                 dispatch(setData(response.data.user))
-                alert('Registration Successful! Please login to continue.')
+                // alert('Registration Successful! Please login to continue.')
             }
 
         }
@@ -86,7 +86,7 @@ export function loginUser(data){
                 dispatch(setIsAuthenticated(true))
                 dispatch(setToken(response.data.token))
                 localStorage.setItem('token', response.data.token)
-                alert('Login Successful!')
+                // alert('Login Successful!')
             }
 
         }

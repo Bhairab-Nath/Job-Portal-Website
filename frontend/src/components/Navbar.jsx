@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, UserCircle, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../store/authSlice";
 import LoginDropdown from "./LoginDropDown";
@@ -10,7 +10,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuthenticated, data } = useSelector((state) => state.auth);
+  const { data, token } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(setLogout());
@@ -31,7 +31,7 @@ const Navbar = () => {
 
         {/* DESKTOP MENU */}
         <div className="hidden md:flex gap-4 items-center">
-          {!isAuthenticated ? (
+          {!token ? (
             <>
               <Link
                 to="/register"
@@ -52,6 +52,19 @@ const Navbar = () => {
                   Dashboard
                 </Link>
               )}
+
+              {data?.role === "jobseeker" && (
+                <Link
+                  to="/user-profile"
+                  className="flex items-center gap-2 border border-slate-200 text-slate-200 hover:text-yellow-400 hover:border-yellow-400 px-4 py-2 rounded-md transition-all hover:scale-105"
+                >
+                  <UserCircle size={20} />
+                  Profile
+                </Link>
+              )}
+
+
+
               <button
                 onClick={handleLogout}
                 className="border border-slate-200 hover:border-yellow-400 hover:text-yellow-400 text-slate-200 px-4 py-2 rounded-md transition-transform hover:scale-105"
@@ -76,7 +89,7 @@ const Navbar = () => {
         className={`md:hidden mt-4 flex flex-col gap-3 overflow-hidden transition-all duration-500 ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           }`}
       >
-        {!isAuthenticated ? (
+        {!token ? (
           <>
             <Link
               to="/register"
@@ -99,6 +112,22 @@ const Navbar = () => {
                 Dashboard
               </Link>
             )}
+
+
+            {data?.role === "jobseeker" && (
+              <Link
+                to="/user-profile"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center justify-center gap-2 border border-slate-200 text-slate-200 px-4 py-2 rounded-md "
+              >
+                <UserCircle size={20} />
+                Profile
+              </Link>
+            )}
+
+
+
+
             <button
               onClick={handleLogout}
               className="border border-slate-200 text-slate-200 px-4 py-2 rounded-md"

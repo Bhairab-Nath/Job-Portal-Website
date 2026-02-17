@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { registerUser, resetStatus } from '../store/authSlice'
 import Layout from '../components/layout/Layout'
 import STATUSES from '../../globals/status/statuses'
+import { toast } from 'react-toastify'
 
 const Register = () => {
     const dispatch = useDispatch()
@@ -34,7 +35,13 @@ const Register = () => {
 
     useEffect(()=>{
         if (status === STATUSES.SUCCESS && error === null){
-            navigate('/login')
+            toast.success('Registration successful! Please login to continue.')
+            navigate('/login/job-seeker')
+            dispatch(resetStatus())
+        }
+
+        if (error){
+            toast.error(error)
             dispatch(resetStatus())
         }
     },[status, error, navigate])

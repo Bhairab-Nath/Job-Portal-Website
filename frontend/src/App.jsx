@@ -11,7 +11,9 @@ import ApplicantsList from './pages/ApplicantsList'
 import ForgetPassword from './pages/ForgetPassword'
 import VerifyOtp from './pages/VerifyOtp'
 import ResetPassword from './pages/ResetPassword'
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import UserProfile from './pages/UserProfile'
 
 const App = () => {
   return (
@@ -22,6 +24,7 @@ const App = () => {
           <Route path="/register" element = {<Register/>} />
           <Route path="/login/:role" element = {<Login/>} />
           <Route path="/job-provider-dashboard" element = {<JobProviderDashboard/>} />
+          <Route path="/user-profile" element = {<UserProfile/>} />
           <Route path="/create-job-post" element = {<CreateJob/>} />
           <Route path="/update-job-post/:id" element = {<EditJob/>} />
           <Route path="/applications/:jobId" element = {<ApplicantsList/>} />
@@ -32,6 +35,14 @@ const App = () => {
           <Route path="/not-found" element = {<NotFound/>} />
           <Route path="*" element = {<NotFound/>} />
         </Routes>
+
+        <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="light"
+        />
+
+
       </BrowserRouter>
     </>
   )

@@ -1,10 +1,23 @@
 const Application = require("../model/applicationModel")
 const User = require("../model/userModel")
+const Job = require("../model/jobModel")
 
 const jobApply = async (req, res) => {
     const { jobId } = req.params
     const userId = req.user.id
+    const isAlreadyApplied = await Application.findOne({
+        where: {
+            userId,
+            jobId
+        }
+    })
 
+    if(isAlreadyApplied){
+        return res.status(400).json({
+            message: "You have already applied for this job!"
+        })
+    }
+        
     const application = await Application.create({
         userId,
         jobId
@@ -65,6 +78,10 @@ const myApplication = async (req, res) => {
     const applications = await Application.findAll({
         where: {
             userId: id
+        },
+        include: {
+            model: Job,
+            attributes: ['title','company']
         }
     })
 
@@ -131,8 +148,6 @@ const deleteApplication = async (req, res) => {
     })
 
 }
-
-
 
 
 module.exports = { jobApply, getAllApplications, myApplication, updateApplicationStatus, deleteApplication, getApplicationByJobId }

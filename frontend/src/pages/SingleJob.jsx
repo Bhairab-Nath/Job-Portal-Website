@@ -8,6 +8,7 @@ import {
 import Layout from "../components/layout/Layout";
 import { APIAuthenticatedClient, apiClient } from "../api";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SingleJob = () => {
     //   const job = {
@@ -50,8 +51,9 @@ const SingleJob = () => {
         try {
             const response = await apiClient.get(`/job/${id}`)
             if (response.status === 200) {
-                console.log("Job data:", response.data.data)
+                // console.log("Job data:", response.data.data)
                 setJob(response.data.data)
+
             }
 
         }
@@ -67,11 +69,12 @@ const SingleJob = () => {
             const response = await APIAuthenticatedClient.post(`/application/apply/${id}`)
 
             if (response.status === 200) {
-                alert("Job applied successfully!")
+                toast.success(response.data.message || "Successfully applied for the job!")
             }
 
         }catch (error) {
-            console.error("Error applying for job:", error)
+            // console.error("Error applying for job:", error)
+            toast.error(error.response?.data?.message || "Failed to apply for job.")
         }
         
     }

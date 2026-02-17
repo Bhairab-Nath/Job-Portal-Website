@@ -3,11 +3,14 @@ import Layout from '../components/layout/Layout'
 import { Link, useNavigate } from 'react-router-dom'
 import { MapPin, Building2, ArrowRight, Briefcase } from "lucide-react";
 import { apiClient } from '../api'
+import { useSelector } from 'react-redux';
 
 const Home = () => {
 
     const [jobs, setJobs] = useState([])
     const navigate = useNavigate()
+
+    const { isAuthenticated,token } = useSelector((state) => state.auth);
 
     const fetchJobs = async () => {
         const response = await apiClient.get('/job/')
@@ -33,26 +36,29 @@ const Home = () => {
                         <p className="text-lg md:text-xl mb-8">
                             Explore thousands of job opportunities and kickstart your career today!
                         </p>
-                        <div className="flex justify-center flex-wrap">
-                            <button
-                                onClick={() => navigate("/register")}
-                                className="group flex items-center gap-2 px-6 py-3 rounded-md bg-yellow-600 text-white text-lg font-medium hover:bg-yellow-700 transition"
-                            >
-                                Get Started
-                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                            </button>
 
-                            {/* <Link
+                        {!token && (
+                            <div className="flex justify-center flex-wrap">
+                                <button
+                                    onClick={() => navigate("/register")}
+                                    className="group flex items-center gap-2 px-6 py-3 rounded-md bg-yellow-600 text-white text-lg font-medium hover:bg-yellow-700 transition"
+                                >
+                                    Get Started
+                                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                </button>
+
+                                {/* <Link
                                 to="/login"
                                 className="border border-white text-white px-6 py-3 rounded-md hover:border-orange-300 hover:text-orange-300 transition"
                             >
                                 Login
                             </Link> */}
-                        </div>
+                            </div>
+                        )}
                     </section>
 
 
-                    <section className="py-12 px-8 text-center">
+                    {/* <section className="py-12 px-8 text-center">
                         <h2 className="text-2xl font-bold mb-4">Search Jobs</h2>
                         <p className="text-gray-600 mb-6">Quickly find jobs that match your skills</p>
                         <div className="flex justify-center flex-wrap gap-4">
@@ -70,7 +76,7 @@ const Home = () => {
                                 Search
                             </button>
                         </div>
-                    </section>
+                    </section> */}
 
 
                     {/* <section className="py-12 px-8">
@@ -160,12 +166,17 @@ const Home = () => {
                     <section className="bg-blue-800 text-white py-12 px-8 text-center rounded-tl-3xl rounded-tr-3xl mt-12">
                         <h2 className="text-3xl font-bold mb-4">Ready to find your perfect job?</h2>
                         <p className="mb-6">Join Job Khojau today and start applying for jobs that match your skills.</p>
-                        <Link
-                            to="/register"
-                            className="bg-yellow-600 text-white font-semibold px-6 py-3 rounded-md hover:bg-yellow-700 transition"
-                        >
-                            Register Now
-                        </Link>
+                        {!token && (
+                            <>
+                                <Link
+                                    to="/register"
+                                    className="bg-yellow-600 text-white font-semibold px-6 py-3 rounded-md hover:bg-yellow-700 transition"
+                                >
+                                    Register Now
+                                </Link>
+                            </>
+                        )}
+
                     </section>
                 </div>
             </Layout>

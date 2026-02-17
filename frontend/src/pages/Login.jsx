@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, resetStatus } from '../store/authSlice'
 import Layout from '../components/layout/Layout'
 import STATUSES from '../../globals/status/statuses'
+import { toast } from 'react-toastify'
 
 const Login = () => {
     const dispatch = useDispatch()
@@ -42,12 +43,21 @@ const Login = () => {
         // }
 
         if(status === STATUSES.SUCCESS && error === null && authData?.role) {
+            
+            toast.success("Login successful!")
             if(authData.role === "jobseeker") {
                 navigate('/') // Redirect to home or job seeker dashboard
             } else if(authData.role === "jobprovider") {
                 navigate('/job-provider-dashboard')
             }
+            
         }
+
+        if(error){
+            toast.error(error)
+            dispatch(resetStatus())
+        }
+
 
     }, [status, error, authData, navigate])
 

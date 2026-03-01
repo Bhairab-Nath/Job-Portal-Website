@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 
-const LoginDropdown = ({ mobile = false, closeMenu }) => {
+const LoginDropDown = ({ mobile = false, closeMenu }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -81,4 +81,4 @@ const LoginDropdown = ({ mobile = false, closeMenu }) => {
   )
 }
 
-export default LoginDropdown;
+export default LoginDropDown;

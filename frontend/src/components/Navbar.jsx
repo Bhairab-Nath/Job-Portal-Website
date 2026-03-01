@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../store/authSlice";
 import LoginDropDown from "./LoginDropDown";
 
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();

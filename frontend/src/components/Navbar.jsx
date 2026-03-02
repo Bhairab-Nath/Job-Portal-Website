@@ -3,8 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Menu, UserCircle, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../store/authSlice";
-import LoginDropDown from "./Temp";
-
+import DropDown from "./DropDown";
 
 
 const Navbar = () => {
@@ -41,7 +40,7 @@ const Navbar = () => {
                 Register
               </Link>
 
-              <LoginDropDown />
+              <DropDown />
             </>
           ) : (
             <>
@@ -100,7 +99,7 @@ const Navbar = () => {
               Register
             </Link>
 
-            <LoginDropDown mobile closeMenu={() => setIsOpen(false)} />
+            <DropDown mobile closeMenu={() => setIsOpen(false)} />
           </>
         ) : (
           <>

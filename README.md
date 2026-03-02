@@ -67,7 +67,8 @@ A full-stack **Job Portal Web Application** built with **React.js**, **Tailwind 
 
 
 
-
+### View Live
+![View Live](https://job-khojau.vercel.app/)
 
 
 ## Future Enhancements

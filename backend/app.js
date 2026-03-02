@@ -9,6 +9,7 @@ const seedAdmin = require('./adminSeed.js');
 require("./model/index.js");
 const cors = require('cors');
 const app = express();
+const Frontend_URL = process.env.FRONTEND_URL
 
 app.use(express.json()) //frontend ko data backend lai bujhauna yo use garne
 
@@ -16,7 +17,7 @@ connectDB();
 seedAdmin();
 
 app.use(cors({
-  origin: 'http://localhost:5173', // frontend URL
+  origin: `${Frontend_URL}`, // frontend URL
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
 }));
 
